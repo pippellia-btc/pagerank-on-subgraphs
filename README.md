@@ -42,7 +42,7 @@ print(f'finished in {toc-tic} seconds\n')
 ### Step 3: Approximate Pagerank over G using Monte-Carlo
 
 Compute the pagerank over G using a simple Monte-Carlo implementation and compute the L1 error.
-This step is essential because it gives us the csr-matrix walk_visited_count.
+This step is essential because it gives us the csr-matrix `walk_visited_count`.
 
 ```python
 R = 10
