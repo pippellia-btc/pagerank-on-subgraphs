@@ -17,20 +17,11 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
         - walk_visited_count is a Compressed Sparse Row (CSR) matrix;
         element (i,j) is equal to the number of times v_j has been visited
         by a random walk started from v_i
-        
-        - mc_pagerank is the dictionary {node: pg} of the pagerank value for each node
+        - mc_pagerank is the dictionary {node: pg} of the pagerank value for each node in G
     '''
 
     # validate all the inputs
-    _validate_inputs(G, R, nodelist, alpha)
-
-    N = len(G)
-
-    if not nodelist:
-        nodelist = list(G.nodes())
-            
-    # compute the inverse map of nodelist
-    inverse_nodelist = {nodelist[j]: j for j in range(N)}
+    N, nodelist, inverse_nodelist = _validate_inputs_and_init_mc(G, R, nodelist, alpha)
 
     # initialize walk_visited_count as a sparse matrix
     walk_visited_count = lil_matrix((N, N), dtype='int')
@@ -40,9 +31,9 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
     # perform R random walks for each node
     for node in nodelist:
 
-        # print progress every 100 nodes
+        # print progress every 200 nodes
         progress_count += 1
-        if progress_count % 100 == 0:
+        if progress_count % 200 == 0:
             print('progress = {:.2f}%'.format(100 * progress_count / N), end='\r')
         
         for _ in range(R):
@@ -52,7 +43,7 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
 
             current_node = node
 
-            while np.random.uniform() < alpha:
+            while random.uniform(0,1) < alpha:
                 
                 successors = list(G.successors(current_node))
                 if not successors:
@@ -80,8 +71,10 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
     return walk_visited_count, mc_pagerank
 
 
-def _validate_inputs(G, R, nodelist, alpha):
-    if len(G) == 0:
+def _validate_inputs_and_init_mc(G, R, nodelist, alpha):
+
+    N = len(G)
+    if N == 0:
         raise ValueError("Graph G is empty")
     
     if not isinstance(R, int) or R <= 0:
@@ -92,3 +85,11 @@ def _validate_inputs(G, R, nodelist, alpha):
     
     if nodelist is not None and set(nodelist) != set(G.nodes()):
         raise ValueError("nodelist does not match the nodes in G")
+
+    else:
+        nodelist = list(G.nodes())
+
+    # compute the inverse map of nodelist
+    inverse_nodelist = {nodelist[j]: j for j in range(N)}
+
+    return N, nodelist, inverse_nodelist
