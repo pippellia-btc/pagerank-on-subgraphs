@@ -1,3 +1,5 @@
+import json
+
 def load_network(name):
 
     if type(name) != str:
