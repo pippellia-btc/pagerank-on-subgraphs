@@ -59,7 +59,9 @@ toc = time.time()
 print(f'performed random walks in {toc-tic} seconds')
 
 # computing the L1 error
-error_G_mc = sum( abs(p_G[node] - mc_pagerank[node]) for node in G.nodes() )
+error_G_mc = sum( abs(p_G[node] - mc_pagerank[node])
+                  for node in G.nodes() )
+
 print(f'error pagerank vs mc pagerank in G = {error_G_mc}')
 ```
 
@@ -97,7 +99,9 @@ toc = time.time()
 print(f'performed random walks in {toc-tic} seconds')
 
 # computing the L1 error
-error_S_subrank = sum( abs(p_S[node] - subrank[node]) for node in S_nodes )
+error_S_subrank = sum( abs(p_S[node] - subrank[node])
+                      for node in S_nodes )
+
 print(f'error pagerank vs subrank in S = {error_S_subrank}')
 ```
 
@@ -116,6 +120,8 @@ toc = time.time()
 print(f'finished in {toc-tic} seconds')
 
 # computing the L1 error
-error_S_naive = sum( abs(p_S[node] - mc_pagerank_S_naive[node]) for node in S.nodes())
+error_S_naive = sum( abs(p_S[node] - mc_pagerank_S_naive[node])
+                      for node in S.nodes())
+
 print(f'error pagerank vs mc pagerank in S = {error_S_naive}')
 ```
