@@ -1,6 +1,8 @@
 # Pagerank on subgraphs—efficient Monte-Carlo estimation
 
 In this repo you can find the reference code for my novel Subrank algorithm for efficiently computing the Pagerank distribution over $S$ subgraph of $G$.
+For the reasoning behind the algorithm, the definition and the analysis, I invite the interested reader to [read the paper](https://pippellia.com/pippellia/Social+Graph/Pagerank+on+subgraphs%E2%80%94efficient+Monte-Carlo+estimation).
+
 To play with it, follow these steps:
 
 ## Step 1: load the graph database
