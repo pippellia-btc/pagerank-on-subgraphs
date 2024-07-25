@@ -9,17 +9,34 @@ def get_subrank(S, G, walk_visited_count, nodelist, alpha = 0.85):
         Subrank algorithm (stopping at dandling nodes);
         it aims to approximate the Pagerank over S subgraph of G
     
-        INPUTS:
-        - S is a directed networkx graph, subgraph of G
-        - G is a directed networkx graph
-        - walk_visited_count is a Compressed Sparse Row (CSR) matrix;
-        element (i,j) is equal to the number of times v_j has been visited
-        by a random walk in G started from v_i
-        - nodelist is the ordered list of nodes in G; it's used to decode walk_visited_count
-        - alpha is the dampening factor of Pagerank. default is 0.85
+        INPUTS
+        ------
+        S: graph
+            A directed Networkx graph, induced subgraph of G
+            
+        G: graph
+            A directed Networkx graph. This function cannot work on directed graphs.
+            
+        walk_visited_count: CSR matrix
+            a Compressed Sparse Row (CSR) matrix; element (i,j) is equal to 
+            the number of times v_j has been visited by a random walk started from v_i
 
-        OUTPUTS:
-        - subrank is the dictionary {node: pg} of the pagerank value for each node in S
+        nodelist: list, optional
+            the list of nodes in G Networkx graph. It is used to decode walk_visited_count
+        
+       alpha: float, optional
+            It is the dampening factor of Pagerank. default value is 0.85
+
+        OUTPUTS
+        -------
+        subrank: dict
+            The dictionary {node: pg} of the pagerank value for each node in S
+
+        References
+        ----------
+        [1] Pippellia,
+        "Pagerank on subgraphs—efficient Monte-Carlo estimation"
+        https://pippellia.com/pippellia/Social+Graph/Pagerank+on+subgraphs%E2%80%94efficient+Monte-Carlo+estimation
     '''
     
     # validate inputs and initialize variables
@@ -37,14 +54,14 @@ def get_subrank(S, G, walk_visited_count, nodelist, alpha = 0.85):
     positive_count = _perform_walks(S_nodes, S, positive_walks, alpha)
     negative_count = _perform_walks(S_nodes, S, negative_walks, alpha)
 
-    # adding the effects of the random walk to the count of G
+    # add the effects of the random walk to the count of G
     new_visited_count = {node: visited_count_from_S[node] + positive_count[node] - negative_count[node]
                         for node in S_nodes}
 
-    # computing the sum 
+    # compute the number of total visits
     total_visits = sum(new_visited_count.values())
 
-    # computing the rank approx
+    # compute the subrank
     subrank = {node: visits / total_visits 
                    for node, visits in new_visited_count.items() }
 
@@ -53,7 +70,20 @@ def get_subrank(S, G, walk_visited_count, nodelist, alpha = 0.85):
 def _validate_inputs_and_init(S, G, walk_visited_count, nodelist, alpha):
 
     '''
-    This function validates all the inputs and initializes useful variables;
+    This function validate the inputs and initialize the following variables:
+    
+    N: int
+        the number of nodes in G Networkx graph
+
+    S_nodes: set
+        the set of nodes that belongs to S
+
+    G_nodes: set
+        the set of nodes that belongs to G
+
+    inverse_nodelist : dict
+        a dictionary that maps each node in G to its position in nodelist
+        
     Note: S being a subgraph of G is NOT checked because it's computationally expensive.
     '''
 
