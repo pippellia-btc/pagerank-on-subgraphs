@@ -22,8 +22,8 @@ To play with it, check out the Jupyter notebook `subrank_demo_notebook.ipynb`
 On random 3-hops subgraphs, the algorithm shows its best performance, reducing the number of random walks to be performed by ~94.6% on average. This is a considerable reduction in overhead compared to the naive algorithm that simply recomputes all random walks.
 
 <p float="left">
-  <img src="https://publish-01.obsidian.md/access/fd5a5849deab7856628935d9cba4ade8/Social%20Graph/Media/error-comparison-naive-approx-algos-3hops.png" width="500" />
-  <img src="https://publish-01.obsidian.md/access/fd5a5849deab7856628935d9cba4ade8/Social%20Graph/Media/ratio-number-of-walks-comparison-naive-approx-algos-3hops.png" width="500" /> 
+  <img src="https://publish-01.obsidian.md/access/fd5a5849deab7856628935d9cba4ade8/Social%20Graph/Media/error-comparison-naive-approx-algos-3hops.png" width="450" />
+  <img src="https://publish-01.obsidian.md/access/fd5a5849deab7856628935d9cba4ade8/Social%20Graph/Media/ratio-number-of-walks-comparison-naive-approx-algos-3hops.png" width="450" /> 
 </p>
 
 Despite the dramatic reduction in overhead, the algorithm achieves a very similar error compared to the naive recomputation.
