@@ -7,23 +7,41 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
     '''
         Monte-Carlo complete path stopping at dandling nodes
     
-        INPUTS:
-        - G is a directed networkx graph
-        - R is the int number of random walks to be performed per node
-        - nodelist is the list of nodes, used to order the nodes in a particular way
-        - alpha is the dampening factor of Pagerank. default is 0.85
+        INPUTS
+        ------
+        G: graph
+            A directed Networkx graph. The function cannot work on directed graphs.
+            
+        R: int
+            The number of random walks to be performed per node
+            
+        nodelist: list, optional
+            the list of nodes in G networkx graph. 
+            It is used to order the nodes in a specified way
+            
+        alpha: float, optional
+            It is the dampening factor of Pagerank. default value is 0.85
 
-        OUTPUTS:
-        - walk_visited_count is a Compressed Sparse Row (CSR) matrix;
-        element (i,j) is equal to the number of times v_j has been visited
-        by a random walk started from v_i
-        - mc_pagerank is the dictionary {node: pg} of the pagerank value for each node in G
+        OUTPUTS
+        -------
+        walk_visited_count: CSR matrix
+            a Compressed Sparse Row (CSR) matrix; element (i,j) is equal to 
+            the number of times v_j has been visited by a random walk started from v_i
+            
+        mc_pagerank: dict
+            The dictionary {node: pg} of the pagerank value for each node in G
+
+        References
+        ----------
+        [1] K.Avrachenkov, N. Litvak, D. Nemirovsky, N. Osipova
+        "Monte Carlo methods in PageRank computation: When one iteration is sufficient"
+        https://www-sop.inria.fr/members/Konstantin.Avratchenkov/pubs/mc.pdf
     '''
 
-    # validate all the inputs
+    # validate all the inputs and initialize variables
     N, nodelist, inverse_nodelist = _validate_inputs_and_init_mc(G, R, nodelist, alpha)
 
-    # initialize walk_visited_count as a sparse matrix
+    # initialize walk_visited_count as a sparse LIL matrix
     walk_visited_count = lil_matrix((N, N), dtype='int')
 
     progress_count = 0
@@ -51,7 +69,8 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
                     
                 current_node = random.choice(successors)
                 current_node_pos = inverse_nodelist[current_node]
-                
+
+                # add current node to the walk_visited_count
                 walk_visited_count[node_pos, current_node_pos] += 1
 
     # Convert lil_matrix to csr_matrix for efficient storage and access
@@ -73,6 +92,19 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
 
 def _validate_inputs_and_init_mc(G, R, nodelist, alpha):
 
+    '''
+    This function validate the inputs and initialize the following variables:
+    
+    N: int
+        the number of nodes in G networkx graph
+
+    nodelist : list
+        the list of nodes in G networkx graph
+
+    inverse_nodelist : dict
+       a dictionary that maps each node in G to its position in nodelist
+    '''
+
     N = len(G)
     if N == 0:
         raise ValueError("Graph G is empty")
@@ -86,7 +118,7 @@ def _validate_inputs_and_init_mc(G, R, nodelist, alpha):
     if nodelist is not None and set(nodelist) != set(G.nodes()):
         raise ValueError("nodelist does not match the nodes in G")
 
-    else:
+    elif nodelist is None:
         nodelist = list(G.nodes())
 
     # compute the inverse map of nodelist
