@@ -10,7 +10,7 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
         INPUTS
         ------
         G: graph
-            A directed Networkx graph. The function cannot work on directed graphs.
+            A directed Networkx graph. This function cannot work on directed graphs.
             
         R: int
             The number of random walks to be performed per node
@@ -73,7 +73,7 @@ def get_mc_pagerank(G, R, nodelist = None, alpha=0.85):
                 # add current node to the walk_visited_count
                 walk_visited_count[node_pos, current_node_pos] += 1
 
-    # Convert lil_matrix to csr_matrix for efficient storage and access
+    # convert lil_matrix to csr_matrix for efficient storage and access
     walk_visited_count = walk_visited_count.tocsr()
 
     # sum all visits for each node into a numpy array
@@ -96,10 +96,10 @@ def _validate_inputs_and_init_mc(G, R, nodelist, alpha):
     This function validate the inputs and initialize the following variables:
     
     N: int
-        the number of nodes in G networkx graph
+        the number of nodes in G Networkx graph
 
     nodelist : list
-        the list of nodes in G networkx graph
+        the list of nodes in G Networkx graph
 
     inverse_nodelist : dict
        a dictionary that maps each node in G to its position in nodelist
