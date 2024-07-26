@@ -25,6 +25,6 @@ On random 3-hops subgraphs, the algorithm shows its best performance, reducing t
 ![ratio-number-of-walks](https://publish-01.obsidian.md/access/fd5a5849deab7856628935d9cba4ade8/Social%20Graph/Media/ratio-number-of-walks-comparison-naive-approx-algos-3hops.png)
 
 Despite the dramatic reduction in overhead, the algorithm achieves a very similar error compared to the naive recomputation.
-![error-comparison](https://publish-01.obsidian.md/access/fd5a5849deab7856628935d9cba4ade8/Social%20Graph/Media/error-comparison-naive-approx-algos-3hops%201.png)
+![error-comparison](https://publish-01.obsidian.md/access/fd5a5849deab7856628935d9cba4ade8/Social%20Graph/Media/error-comparison-naive-approx-algos-3hops.png)
 
 For the reasoning behind the algorithm, the definition and the analysis, I invite the interested reader to [read the paper](https://pippellia.com/pippellia/Social+Graph/Pagerank+on+subgraphs%E2%80%94efficient+Monte-Carlo+estimation).
